@@ -38,7 +38,7 @@
     
                     <tr>
                         <th>Giá phòng:</th>
-                        <td>{{number_format($room->price, 0, ',', '.') }} VNĐ/đêm</td>
+                        <td>{{number_format($room->price, 0, ',', '.') }} VNĐ/m</td>
                     </tr>
 
                     <tr>
