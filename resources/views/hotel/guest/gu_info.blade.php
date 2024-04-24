@@ -44,7 +44,7 @@
                         <label for="oldPassword">Nhập mật khẩu cũ</label>
                     </th>
 
-                    <td><input type="password" placeholder="Nhập mật khẩu cũ" name="oldPassword"></td>
+                    <td><input type="password" placeholder="Nhập mật khẩu cũ" name="oldPassword" required></td>
                 </tr>
 
                 <tr class="tr-info-user">
