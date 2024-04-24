@@ -39,7 +39,7 @@
     
                         <tr>
                             <td>{{ ++$key }}</td>
-                            <td><img src="{{ asset('hotel/assets/img/Room/' . $room->image) }}" alt=""></td>
+                            <td><img src="{{ asset('hotel/assets/img/Room/' . $room->image) }}" alt="" style="width: 100%"></td>
                             <td>{{ $room->name }}</td>
                             <td>
                                 Số người: {{ $cateBooking->odCountPeople }} <br>
