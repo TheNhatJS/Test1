@@ -77,19 +77,21 @@ class GuestController extends Controller
 
     public function postUpdateUser(Request $request) {
         
-        if($request->newPassword != "" && $request->reNewPassword != "")
+        if($request->newPassword == "" && $request->reNewPassword == "")
         {
-            $userID = $request->input('userID');
-            $password = Session::get('userr')->password;
-            $oldPassword = md5($request->oldPassword);
-            $newPassword = md5($request->newPassword);
-            $reNewPassword = md5($request->reNewPassword);
-        }else{
             $userID = $request->input('userID');
             $password = Session::get('userr')->password;
             $oldPassword = md5($request->oldPassword);
             $newPassword = md5($request->oldPassword);
             $reNewPassword = md5($request->oldPassword);
+
+            
+        }else{
+            $userID = $request->input('userID');
+            $password = Session::get('userr')->password;
+            $oldPassword = md5($request->oldPassword);
+            $newPassword = md5($request->newPassword);
+            $reNewPassword = md5($request->reNewPassword);
         }
 
         if($oldPassword != $password){

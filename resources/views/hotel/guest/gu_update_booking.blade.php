@@ -43,6 +43,16 @@
                         </tr>
 
                         <tr>
+                            <th>Tiền đặt cọc(10%):</th>
+                            <td>
+                                <?php
+                                    $datCoc = $room->price*0.1;
+                                    echo number_format($datCoc, 0, ',', '.') . " VNĐ";
+                                ?>
+                            </td>
+                        </tr>
+
+                        <tr>
                             <td colspan="2" style="font-size: 14px; font-weight: 100; line-height: 1.4; text-align: justify">
                                 {!! nl2br(e($room->info)) !!}
 

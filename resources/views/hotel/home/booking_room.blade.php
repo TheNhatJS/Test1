@@ -38,7 +38,17 @@
     
                     <tr>
                         <th>Giá phòng:</th>
-                        <td>{{number_format($room->price, 0, ',', '.') }} VNĐ/m</td>
+                        <td>{{number_format($room->price, 0, ',', '.') }} VNĐ/Ngày</td>
+                    </tr>
+                    
+                    <tr>
+                        <th>Tiền đặt cọc(10%):</th>
+                        <td>
+                            <?php
+                                $datCoc = $room->price*0.1;
+                                echo number_format($datCoc, 0, ',', '.') . " VNĐ";
+                            ?>
+                        </td>
                     </tr>
 
                     <tr>
@@ -47,6 +57,7 @@
 
                         </td>
                     </tr>
+
                 </table>
             </div>
     
@@ -100,8 +111,12 @@
                             <label for="note">Ghi chú</label><br>
                             <textarea name="note" id="note" cols="30" rows="10" placeholder="Ghi chú cho khách sạn"></textarea><br>
                         </div>
-    
-                        <button type="submit" name="btn-booking">Đặt phòng</button>
+                        @if ($room->status == 1)
+                            <button type="submit" name="btn-booking">Đặt phòng</button>                            
+                        @else
+                            <button type="submit" name="btn-booking" disabled >Đặt phòng</button>
+                        @endif
+
                     </form>
             </div>
         </div>

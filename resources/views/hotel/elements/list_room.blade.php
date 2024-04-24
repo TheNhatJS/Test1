@@ -7,7 +7,7 @@
 
         <div class="room owl-carousel owl-theme">
             @foreach ($allRoom as $key => $cateRoom)
-                @if ($cateRoom->type == 'Standard'  && $cateRoom->status == 1)
+                @if ($cateRoom->type == 'Standard')
                     <div class="room-items">
                         <div class="room-img">
                             <img src="{{ asset('hotel/assets/img/Room/' . $cateRoom->image) }}" alt=""
@@ -16,6 +16,8 @@
                         <div class="room-body mt-5">
                             <p>Phòng: {{ $cateRoom->name }}</p>
                             <p>Giá: {{ number_format($cateRoom->price, 0, ',', '.') }} VNĐ/ngày</p>
+                            <p>Trạng thái: {{ $cateRoom->status == 1 ? 'Đang trống' : 'Đã thuê' }}</p>
+
                             <button class="room-btn"><a href="{{ route('home/booking-room', ['roomID' => $cateRoom->roomID]) }}">Xem thêm</a></button>
                         </div>
                     </div>
@@ -43,7 +45,7 @@
         <div class="room owl-carousel owl-theme">
 
             @foreach ($allRoom as $key => $cateRoom)
-                @if ($cateRoom->type == 'Superior'  && $cateRoom->status == 1)
+                @if ($cateRoom->type == 'Superior')
                     <div class="room-items">
                         <div class="room-img">
                             <img src="{{ asset('hotel/assets/img/Room/' . $cateRoom->image) }}" alt=""
@@ -52,6 +54,8 @@
                         <div class="room-body mt-5">
                             <p>Phòng: {{ $cateRoom->name }}</p>
                             <p>Giá: {{ number_format($cateRoom->price, 0, ',', '.') }} VNĐ/ngày</p>
+                            <p>Trạng thái: {{ $cateRoom->status == 1 ? 'Đang trống' : 'Đã thuê' }}</p>
+
                             <button class="room-btn"><a href="{{ route('home/booking-room', ['roomID' => $cateRoom->roomID]) }}">Xem thêm</a></button>
                         </div>
                     </div>
@@ -70,7 +74,7 @@
         <div class="room owl-carousel owl-theme">
 
             @foreach ($allRoom as $key => $cateRoom)
-                @if ($cateRoom->type == 'Deluxe' && $cateRoom->status == 1)
+                @if ($cateRoom->type == 'Deluxe')
                      <div class="room-items">
                         <div class="room-img">
                             <img src="{{ asset('hotel/assets/img/Room/' . $cateRoom->image) }}" alt=""
@@ -79,6 +83,8 @@
                         <div class="room-body mt-5">
                             <p>Phòng: {{ $cateRoom->name }}</p>
                             <p>Giá: {{ number_format($cateRoom->price, 0, ',', '.') }} VNĐ/ngày</p>
+                            <p>Trạng thái: {{ $cateRoom->status == 1 ? 'Đang trống' : 'Đã thuê' }}</p>
+
                             <button class="room-btn"><a href="{{ route('home/booking-room', ['roomID' => $cateRoom->roomID]) }}">Xem thêm</a></button>
                         </div>
                     </div>
@@ -95,7 +101,7 @@
 
         <div class="room owl-carousel owl-theme">
             @foreach ($allRoom as $key => $cateRoom)
-                @if ($cateRoom->type == 'Suite' && $cateRoom->status == 1)
+                @if ($cateRoom->type == 'Suite')
                      <div class="room-items">
                         <div class="room-img">
                             <img src="{{ asset('hotel/assets/img/Room/' . $cateRoom->image) }}" alt=""
@@ -104,6 +110,7 @@
                         <div class="room-body mt-5">
                             <p>Phòng: {{ $cateRoom->name }}</p>
                             <p>Giá: {{ number_format($cateRoom->price, 0, ',', '.') }} VNĐ/ngày</p>
+                            <p>Trạng thái: {{ $cateRoom->status == 1 ? 'Đang trống' : 'Đã thuê' }}</p>
                             <button class="room-btn"><a href="{{ route('home/booking-room', ['roomID' => $cateRoom->roomID]) }}">Xem thêm</a></button>
                         </div>
                     </div>
