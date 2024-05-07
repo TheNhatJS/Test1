@@ -75,52 +75,43 @@ class GuestController extends Controller
         return redirect()->to('home/guest/list-booking-room');
     }
 
-    public function postUpdateUser(Request $request) {
+    public function postUpdateUser(Request $request) {        
+        $userID = $request->input('userID');
+        $password = Session::get('userr')->password;
+        $oldPassword = md5($request->oldPassword);
         
-        if($request->newPassword == "" && $request->reNewPassword == "")
-        {
-            $userID = $request->input('userID');
-            $password = Session::get('userr')->password;
-            $oldPassword = md5($request->oldPassword);
-            $newPassword = md5($request->oldPassword);
-            $reNewPassword = md5($request->oldPassword);
-
-            
-        }else{
-            $userID = $request->input('userID');
-            $password = Session::get('userr')->password;
-            $oldPassword = md5($request->oldPassword);
+        // Kiểm tra xem người dùng đã nhập mật khẩu mới hay chưa
+        if($request->newPassword != "" && $request->reNewPassword != "") {
             $newPassword = md5($request->newPassword);
             $reNewPassword = md5($request->reNewPassword);
+            
+            // Kiểm tra tính hợp lệ của mật khẩu mới và mật khẩu nhập lại
+            if($newPassword != $reNewPassword){
+                Session::put('error', 'Nhập mật khẩu không chính khớp!');
+                return redirect()->back();
+            }
+        } else {
+            // Nếu không có mật khẩu mới, sử dụng mật khẩu cũ
+            $newPassword = $password;
         }
-
+        // Kiểm tra tính hợp lệ của mật khẩu cũ
         if($oldPassword != $password){
             Session::put('error', 'Nhập mật khẩu cũ không chính xác!');
-
             return redirect()->back();
-        }
-
-        elseif($newPassword != $reNewPassword){
-            Session::put('error', 'Nhập mật khẩu không chính khớp!');
-
-            return redirect()->back();
-        }
-
-
+        }  
         $data = array();
         $data['name'] = $request->name;
         $data['email'] = $request->email;
         $data['phone'] = $request->phone;
-        $data['password'] = md5($request->newPassword);
-
+        $data['password'] = $newPassword;
+    
         DB::table('tbl_user')->where('userID', $userID)->update($data);
-
+    
         Session::put('error', 'Cập nhật thông tin tài khoản thành công!');
-
-        
-            
+    
         return redirect()->back();
     }
+    
 
     public function deleteBookingRom(Request $request) {       
         $check = Session::get('userr');
