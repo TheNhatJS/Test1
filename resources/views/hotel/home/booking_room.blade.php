@@ -104,7 +104,7 @@
     
                         <div>
                             <label for="countPeople">Số lượng người</label><br>
-                            <input type="number" id="countPeople" name="countPeople" max="{{ $room->countPeople }}" required><br>
+                            <input type="number" id="countPeople" name="countPeople" max="{{ $room->countPeople }}" min="1" required><br>
                         </div>
     
                         <div>
