@@ -81,7 +81,7 @@
                     </th>
 
                     <td>
-                        <textarea id="roomInfo" name="roomInfo" cols="30" rows="10" style="width: 100%;"></textarea>
+                        <textarea id="roomInfo" name="roomInfo" cols="30" rows="10" style="width: 100%; resize: none;"></textarea>
                     </td>
                 </tr>
                 
