@@ -81,13 +81,33 @@ class GuestController extends Controller
         $oldPassword = md5($request->oldPassword);
         
         // Kiểm tra xem người dùng đã nhập mật khẩu mới hay chưa
+        if($request->newPassword != ""){
+            $newPassword = md5($request->newPassword);
+            $reNewPassword = md5($request->reNewPassword);
+
+            if($newPassword != $reNewPassword){
+                Session::put('error', 'Nhập mật khẩu không khớp!');
+                return redirect()->back();
+            }
+        }
+
+        if($request->reNewPassword != ""){
+            $newPassword = md5($request->newPassword);
+            $reNewPassword = md5($request->reNewPassword);
+
+            if($newPassword != $reNewPassword){
+                Session::put('error', 'Nhập mật khẩu không khớp!');
+                return redirect()->back();
+            }
+        }
+
         if($request->newPassword != "" && $request->reNewPassword != "") {
             $newPassword = md5($request->newPassword);
             $reNewPassword = md5($request->reNewPassword);
             
             // Kiểm tra tính hợp lệ của mật khẩu mới và mật khẩu nhập lại
             if($newPassword != $reNewPassword){
-                Session::put('error', 'Nhập mật khẩu không chính khớp!');
+                Session::put('error', 'Nhập mật khẩu không khớp!');
                 return redirect()->back();
             }
         } else {
