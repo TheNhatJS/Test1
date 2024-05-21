@@ -665,10 +665,15 @@ html {
 
 .container-login-register {
     display: flex;
-    justify-content: center;
+    justify-content: end;
     align-items: center;
     height: 100vh;
     background-color: #f8f5f0;
+
+    background-image: url('../img/Background/Hotel.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 .login-register {
@@ -678,6 +683,8 @@ html {
     border-radius: 5px;
     background-color: #f9f9f9;
     margin-top: 60px;
+
+    margin-right: 20px;
 }
 
 .login-register h1 {

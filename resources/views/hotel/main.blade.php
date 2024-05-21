@@ -6,7 +6,7 @@
 <body>
     <div id="main">
         {{--  Header  --}}
-        @include('hotel.elements.header')
+        {{--  @include('hotel.elements.header')  --}}
         
         @yield('content')    
         

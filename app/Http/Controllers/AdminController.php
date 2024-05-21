@@ -31,7 +31,8 @@ class AdminController extends Controller
         }
 
         $allRoom = DB::table('tbl_room')->get();
-        return view($this->pathViewController . 'ad_list_room', ['allRoom' => $allRoom]);
+        $countRooms = DB::table('tbl_room')->count('roomID');
+        return view($this->pathViewController . 'ad_list_room', ['allRoom' => $allRoom, 'countAllRoom' => $countRooms]);
     }
 
     public function listBookingRom() {   
@@ -244,13 +245,15 @@ class AdminController extends Controller
     // ============== DELETE ROOM ==============
     public function deleteRoom(Request $request) {
         $roomID = $request->input('roomID');
-        
+        $countDelete = 0;
 
         DB::table('tbl_room')->where('roomID', $roomID)->delete();
 
         Session::put('error', 'Xóa phòng thành công');
+        $countDelete++;
             
         return redirect()->back();
+        //return view($this->pathViewController . 'ad_list_room', ['countDelete' => $countDelete]);
     }
 
     // ============== AD - Booking ROOM ==============

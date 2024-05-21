@@ -1,3 +1,5 @@
+@include('hotel.elements.header')
+
 @extends('hotel.main')
 
 @section('content')

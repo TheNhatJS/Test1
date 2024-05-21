@@ -27,7 +27,7 @@
                     <th>Thông tin đặt phòng</th>
                     <th>Thông tin khách hàng</th>
 
-                    <th colspan="2">Action</th>
+                    <th colspan="3">Action</th>
                 </thead>
 
                 <tbody>
@@ -67,6 +67,11 @@
                                 <a href="{{ route('home/admin/updateStatus1Room', ['bookingID' => $cateBooking->bookingID]) }}"><i class="ti-notepad">
                                     
                                 </i></a>
+                            </td>
+
+                            <td>
+                                <a href="{{ route('home/guest/deleteBookingRoom', ['bookingID' => $cateBooking->bookingID]) }}" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')"><i class="ti-trash"></i></a>
+    
                             </td>
                         </tr>
                     @endforeach
