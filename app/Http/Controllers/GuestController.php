@@ -128,7 +128,8 @@ class GuestController extends Controller
         $existingUser = DB::table('tbl_user')->where('email', $request->email)->first();
         if ($existingUser) {
             Session::put('error', 'Email đã tồn tại!');
-            return redirect()->to('/guest');
+            // return redirect()->to('guest');
+            return Redirect::to('/home/guest');
         }
     
         DB::table('tbl_user')->where('userID', $userID)->update($data);

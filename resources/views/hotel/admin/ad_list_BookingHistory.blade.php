@@ -3,7 +3,7 @@
 @section('ad_content')
     <div id="ad-room-list">
         <div style="width: 90%; background-color: #b5e1f4; padding: 5px; margin: 20px auto 10px auto; text-align: center; border-radius: 5px">
-            <h1 class="ad-list-title">Danh sách hóa đơn</h1>
+            <h1 class="ad-list-title">Lịch sử đặt phòng</h1>
         </div>
         <div id="error-message" class="text-alert" style="color: red; font-weight: 700">
             @php
@@ -24,29 +24,32 @@
                     <th>Ngày nhận phòng</th>
                     <th>Ngày trả phòng</th>
                     <th>Tổng tiền</th>
+                    <th>Ngày tạo lịch sử</th>
 
                     <th>Action</th>
                 </thead>
 
                 <tbody>
-                    @foreach($allBill as $key => $cateBill)
+                    @foreach($allBookingHistory as $key => $cateBookingHistory)
 
-                    <?php
-                        $booking = DB::table('tbl_booking')->where('bookingID', $cateBill->bookingID)->first();
+                    {{--  <?php
+                        $booking = DB::table('tbl_booking')->where('bookingID', $cateBookingHistory->bookingID)->first();
                         $room = DB::table('tbl_room')->where('roomID', $booking->roomID)->first();
-                        $user = DB::table('tbl_user')->where('userID', $cateBill->userID)->first();
+                        $user = DB::table('tbl_user')->where('userID', $booking->userID)->first();
+                        $bill = DB::table('tbl_bill')->where('billID', $cateBookingHistory->billID)->first();
 
-                    ?>
+                    ?>  --}}
                     <tr>
                         <td>{{ ++$key }}</td>
-                        <td>{{ $room->name }}</td>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $booking->checkInDate }}</td>
-                        <td>{{ $booking->checkOutDate }}</td>
-                        <td>{{ number_format($cateBill->pay, 0, ',', '.') }} VNĐ</td>
+                        <td>{{ $cateBookingHistory->nameRoom }}</td>
+                        <td>{{ $cateBookingHistory->nameUser }}</td>
+                        <td>{{ $cateBookingHistory->checkIn }}</td>
+                        <td>{{ $cateBookingHistory->checkOut }}</td>
+                        <td>{{ number_format($cateBookingHistory->payRoom, 0, ',', '.') }} VNĐ</td>
+                        <td>{{ $cateBookingHistory->create }}</td>
                         
                         <td>
-                            <a href="{{ route('home/admin/deleteBill', ['bookingID' => $cateBill->bookingID]) }}" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')"><i class="ti-trash">
+                            <a href="{{ route('home/admin/deleteBookingHistory', ['historyID' => $cateBookingHistory->historyID]) }}" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')"><i class="ti-trash">
                                 
                             </i></a>
                         </td>

@@ -1,3 +1,5 @@
+{{--  use Carbon\Carbon;  --}}
+
 @include('hotel.elements.header')
 
 @extends('hotel.main')

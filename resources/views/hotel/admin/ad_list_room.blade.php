@@ -16,13 +16,34 @@
         </div>
 
         <div style="padding: 20px; background-color: #fcfcfc; box-shadow: 0 0 10px rgba(56, 56, 56, 0.6); border-radius: 5px; width: 90%; margin: auto">
-            <div>
+            {{--  <div>
                 Tổng số phòng: 
                 @php 
                     echo $countAllRoom;
                 @endphp
+                <br>
+                Số phòng Standard: 
+                @php 
+                    echo $countStand;
+                @endphp
+                <br>
+                Số phòng Superior: 
+                @php 
+                    echo $countSuper;
+                @endphp
+                <br>
+                Số phòng Deluxe: 
+                @php 
+                    echo $countDelux;
+                @endphp
+                <br>
+                Số phòng Suite: 
+                @php 
+                    echo $countSuite;
+                @endphp
+                <br>
 
-            </div>
+            </div>  --}}
             <table border="1px">
                     <thead style="background-color: #b5e1f4;">
                         <th>STT</th>
@@ -33,6 +54,8 @@
                         <th>Loại</th>
                         <th>Giá</th>
                         <th>Số người tối đa</th>
+                        <th>Ngày tạo</th>
+                        <th>Ngày cập nhật</th>
 
                         <th colspan="2">Action</th>
                     </thead>
@@ -63,6 +86,10 @@
                             <td>{{ $cateRoom->price }}</td>
 
                             <td>{{ $cateRoom->countPeople }}</td>
+                            
+                            <td>{{ $cateRoom->create }}</td>
+
+                            <td>{{ $cateRoom->update }}</td>
 
 
                             <td>

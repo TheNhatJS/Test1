@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Redirect;
 
 use Illuminate\Support\Facades\Session;
 
+use Carbon\Carbon;
+
 class AdminController extends Controller
 {
     private $pathViewController = 'hotel.admin.';
@@ -32,7 +34,35 @@ class AdminController extends Controller
 
         $allRoom = DB::table('tbl_room')->get();
         $countRooms = DB::table('tbl_room')->count('roomID');
-        return view($this->pathViewController . 'ad_list_room', ['allRoom' => $allRoom, 'countAllRoom' => $countRooms]);
+        $countStand = DB::table('tbl_room')->where('type', 'Standard')->count('roomID');
+        $countSuper = DB::table('tbl_room')->where('type', 'Superior')->count('roomID');
+        $countDelux = DB::table('tbl_room')->where('type', 'Deluxe')->count('roomID');
+        $countSuite = DB::table('tbl_room')->where('type', 'Suite')->count('roomID');
+        
+        return view($this->pathViewController . 'ad_list_room', ['allRoom' => $allRoom, 'countAllRoom' => $countRooms,
+                    'countStand' => $countStand, 'countSuper' => $countSuper, 'countDelux' => $countDelux, 'countSuite' => $countSuite]);
+    }
+
+    public function thongke() {
+        $check = Session::get('userr');
+        if(!$check) { 
+            return Redirect::to('/home');
+        }
+        else{
+            if($check->role == 'GUEST'){
+                return Redirect::to('/home');
+            }
+        }
+
+        
+        $countRooms = DB::table('tbl_room')->count('roomID');
+        $countStand = DB::table('tbl_room')->where('type', 'Standard')->count('roomID');
+        $countSuper = DB::table('tbl_room')->where('type', 'Superior')->count('roomID');
+        $countDelux = DB::table('tbl_room')->where('type', 'Deluxe')->count('roomID');
+        $countSuite = DB::table('tbl_room')->where('type', 'Suite')->count('roomID');
+        
+        return view($this->pathViewController . 'ad_thongke', ['countAllRoom' => $countRooms,
+                    'countStand' => $countStand, 'countSuper' => $countSuper, 'countDelux' => $countDelux, 'countSuite' => $countSuite]);
     }
 
     public function listBookingRom() {   
@@ -82,6 +112,21 @@ class AdminController extends Controller
         return view($this->pathViewController . 'ad_list_bill', ['allBill' => $allBill]);
     }
 
+    public function listBookingHistory() {   
+        $check = Session::get('userr');
+        if(!$check) { 
+            return Redirect::to('/home');
+        }
+        else{
+            if($check->role == 'GUEST'){
+                return Redirect::to('/home');
+            }
+        }
+
+        $allBookingHistory = DB::table('tbl_booking_history')->get();
+        return view($this->pathViewController . 'ad_list_BookingHistory', ['allBookingHistory' => $allBookingHistory]);
+    }
+
     public function addRoom() {   
         $check = Session::get('userr');
         if(!$check) { 
@@ -93,7 +138,7 @@ class AdminController extends Controller
             }
         }
 
-        return view($this->pathViewController . 'ad_add_room');
+        return view($this->pathViewController . 'ad_add2_room');
     }
 
     public function updateRoom(Request $request) {   
@@ -196,36 +241,93 @@ class AdminController extends Controller
     }
 
     // ============== ADD ROOM ==============
+    // public function postAddRoom(Request $request) {
+
+    //     // Kiểm tra xem phòng đã tồn tại hay chưa
+    //     $existingRoom = DB::table('tbl_room')->where('name', $request->roomName)->first();
+    //     $currentDateTime = Carbon::now('Asia/Ho_Chi_Minh');
+    //     // Nếu đã tồn tại phòng có tên giống
+    //     if ($existingRoom) {
+    //         Session::put('error', 'Phòng đã tồn tại');
+    //         return redirect()->back();
+    //     }
+
+    //     $data = array();
+    //     $data['name'] = $request->roomName;
+    //     $data['type'] = $request->roomType;
+    //     $data['price'] = $request->roomPrice;
+    //     $data['countPeople'] = $request->countPeo;
+    //     $data['status'] = $request->roomStatus;
+    //     $data['info'] = $request->roomInfo;
+    //     $data['image'] = $request->roomImage;
+    //     $data['create'] = $currentDateTime;
+    //     $data['update'] = $currentDateTime;
+
+
+    //     DB::table('tbl_room')->insert($data);
+
+    //     Session::put('error', 'Tạo phòng thành công');
+            
+    //     return redirect()->back();
+    // }
+
+
     public function postAddRoom(Request $request) {
+        $roomNames = $request->input('roomName');
+        $roomTypes = $request->input('roomType');
+        $roomPrices = $request->input('roomPrice');
+        $countPeos = $request->input('countPeo');
+        $roomStatuses = $request->input('roomStatus');
+        $roomInfos = $request->input('roomInfo');
+        $roomImages = $request->file('roomImage');
+        $currentDateTime = Carbon::now('Asia/Ho_Chi_Minh');
+        // dd($roomNames, $roomTypes, $roomPrices, $countPeos, $roomStatuses, $roomInfos, $roomImages);
 
-        // Kiểm tra xem phòng đã tồn tại hay chưa
-        $existingRoom = DB::table('tbl_room')->where('name', $request->roomName)->first();
+        $rooms = [];
+        
+        foreach ($roomNames as $index => $roomName) {
+            // Kiểm tra xem phòng đã tồn tại hay chưa
+            $existingRoom = DB::table('tbl_room')->where('name', $roomName)->first();
+            
+            if ($existingRoom) {
+                Session::put('error', 'Phòng ' . $roomName . ' đã tồn tại');
+                return redirect()->back();
+            }
 
-        // Nếu đã tồn tại phòng có tên giống
-        if ($existingRoom) {
-            Session::put('error', 'Phòng đã tồn tại');
-            return redirect()->back();
+            // Lưu ảnh phòng
+            $roomImageName = $roomImages[$index]->getClientOriginalName();
+            $roomImages[$index]->move(public_path('images'), $roomImageName);
+
+            $rooms[] = [
+                'name' => $roomName,
+                'type' => $roomTypes[$index],
+                'price' => $roomPrices[$index],
+                'countPeople' => $countPeos[$index],
+                'status' => $roomStatuses[$index],
+                'info' => $roomInfos[$index],
+                'image' => $roomImageName,
+                'create' => $currentDateTime,
+                'update' => $currentDateTime,
+            ];
         }
 
-        $data = array();
-        $data['name'] = $request->roomName;
-        $data['type'] = $request->roomType;
-        $data['price'] = $request->roomPrice;
-        $data['countPeople'] = $request->countPeo;
-        $data['status'] = $request->roomStatus;
-        $data['info'] = $request->roomInfo;
-        $data['image'] = $request->roomImage;
-
-        DB::table('tbl_room')->insert($data);
+        DB::table('tbl_room')->insert($rooms);
 
         Session::put('error', 'Tạo phòng thành công');
-            
         return redirect()->back();
     }
+
+    
+    
+    
+    
 
     // ============== UPDATE ROOM ==============
     public function postUpdateRoom(Request $request) {
         $roomID = $request->input('roomID');
+        $currentDateTime = Carbon::now('Asia/Ho_Chi_Minh');
+
+
         $data = array();
         $data['name'] = $request->roomName;
         $data['type'] = $request->roomType;
@@ -234,6 +336,8 @@ class AdminController extends Controller
         $data['status'] = $request->roomStatus;
         $data['info'] = $request->roomInfo;
         $data['image'] = $request->roomImage;
+        // $data['create'] = $currentDateTime;
+        $data['update'] = $currentDateTime;
 
         DB::table('tbl_room')->where('roomID', $roomID)->update($data);
 
@@ -245,12 +349,12 @@ class AdminController extends Controller
     // ============== DELETE ROOM ==============
     public function deleteRoom(Request $request) {
         $roomID = $request->input('roomID');
-        $countDelete = 0;
+
 
         DB::table('tbl_room')->where('roomID', $roomID)->delete();
 
         Session::put('error', 'Xóa phòng thành công');
-        $countDelete++;
+
             
         return redirect()->back();
         //return view($this->pathViewController . 'ad_list_room', ['countDelete' => $countDelete]);
@@ -258,6 +362,7 @@ class AdminController extends Controller
 
     // ============== AD - Booking ROOM ==============
     public function postBookingRoom(Request $request) {
+        $currentDateTime = Carbon::now('Asia/Ho_Chi_Minh');
         
         $data = array();
         $data['userID'] = Session::get('userr')->userID;
@@ -266,6 +371,8 @@ class AdminController extends Controller
         $data['checkOutDate'] = $request->checkOut;
         $data['odCountPeople'] = $request->countPeople;
         $data['note'] = $request->note;
+        $data['create'] = $currentDateTime;
+        $data['update'] = $currentDateTime;
 
         if($data['checkInDate'] > $data['checkOutDate']) {
             Session::put('error', 'Có lỗi trong ngày đặt!!!');
@@ -302,6 +409,9 @@ class AdminController extends Controller
         $room = DB::table('tbl_room')->where('roomID', $booking->roomID)->first();
 
         $existingBill = DB::table('tbl_bill')->where('bookingID', $booking->bookingID)->first();
+
+        $currentDateTime = Carbon::now('Asia/Ho_Chi_Minh');
+
         if($existingBill) {
             Session::put('error','Hóa đơn đã tồn tại');
 
@@ -312,13 +422,30 @@ class AdminController extends Controller
         $data['bookingID'] = $bookingID;
         $data['userID'] = $booking->userID;        
         $data['pay'] = $room->price;
+        $data['create'] = $currentDateTime;
+        $data['update'] = $currentDateTime;
 
-        DB::table('tbl_bill')->insert($data);
+        $billID = DB::table('tbl_bill')->insertGetId($data);
 
 
         DB::table('tbl_room')->where('roomID', $booking->roomID)->update(['status' => 1]);
 
         // DB::table('tbl_booking')->where('roomID', $roomID)->delete();
+
+        // $booking = DB::table('tbl_booking')->where('bookingID', $bookingID);
+        // $room = DB::table('tbl_room')->where('roomID', $booking->roomID);
+        $user = DB::table('tbl_user')->where('userID', $booking->userID)->first();
+        $bill = DB::table('tbl_bill')->where('billID', $billID)->first();
+
+        $historyData = array();
+        $historyData['nameRoom'] = $room->name;
+        $historyData['nameUser'] = $user->name;
+        $historyData['checkIn'] = $booking->checkInDate;
+        $historyData['checkOut'] = $booking->checkOutDate;
+        $historyData['payRoom'] = $bill->pay;
+        $historyData['create'] = $currentDateTime;
+
+        DB:: table('tbl_booking_history')->insert($historyData);
 
         Session::put('error','Đã xuất hóa đơn, xác nhận phòng đã trống');
 
@@ -335,6 +462,19 @@ class AdminController extends Controller
         DB::table('tbl_booking')->where('bookingID', $bookingID)->delete();
 
         Session::put('error','Xóa hóa đơn thành công');
+
+        return redirect()->back();
+    }
+
+    // =========== DELETE Booking History ===============
+
+    public function deleteBookingHistory(Request $request) {
+        $historyID = $request->input('historyID');
+
+        DB::table('tbl_booking_history')->where('historyID', $historyID)->delete();
+        
+
+        Session::put('error','Xóa lịch sử đặt phòng thành công');
 
         return redirect()->back();
     }

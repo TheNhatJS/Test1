@@ -19,6 +19,9 @@ return new class extends Migration
             $table->date('checkOutDate');
             $table->unsignedInteger('odCountPeople');
             $table->text('note')->nullable();
+            $table->dateTime('create');
+            $table->dateTime('update');
+            
             $table->timestamps();
             
 

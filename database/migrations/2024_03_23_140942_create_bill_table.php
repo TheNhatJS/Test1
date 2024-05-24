@@ -16,10 +16,13 @@ return new class extends Migration
             $table->unsignedInteger('bookingID');
             $table->unsignedInteger('userID');
             $table->integer('pay');
+            $table->dateTime('create');
+            $table->dateTime('update');
 
             $table->timestamps();
 
-            $table->foreign('bookingID')->references('bookingID')->on('tbl_booking')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('bookingID')->references('bookingID')->on('tbl_booking')->onDelete('cascade')->onUpdate('cascade'); 
+            // Nếu booking xóa thì bill bị xóa theo, nếu bill xóa thì booking vẫn còn
             $table->foreign('userID')->references('userID')->on('tbl_user')->onDelete('cascade')->onUpdate('cascade');
 
         });

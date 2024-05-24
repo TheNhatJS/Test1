@@ -19,6 +19,14 @@
         <li>
             <a href="{{ route('home/admin/addRoom') }}">Thêm phòng</a>
         </li>
+
+        <li>
+            <a href="{{ route('home/admin/thongke') }}">Thống kê</a>
+        </li>
+
+        <li>
+            <a href="{{ route('home/admin/listBookingHistory') }}">Lịch sử đặt phòng</a>
+        </li>
     </ul>
 
 </div>

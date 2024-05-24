@@ -823,6 +823,14 @@ html {
     padding-bottom: 50px;
 }
 
+.flex-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 600px;
+}
+
 /*================== GUEST ==================*/
 #inf-user {
     float: right;

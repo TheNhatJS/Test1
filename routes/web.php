@@ -35,6 +35,11 @@ Route::group(['prefix' => $prefixHome], function() {
 
         Route::get('list-bill', [AdminController::class, 'listBill'])->name('home/admin/listBill');
 
+        Route::get('list-booking-history', [AdminController::class, 'listBookingHistory'])->name('home/admin/listBookingHistory');
+        Route::get('delete-booking-history', [AdminController::class, 'deleteBookingHistory'])->name('home/admin/deleteBookingHistory');
+
+
+
         Route::get('add-room', [AdminController::class, 'addRoom'])->name('home/admin/addRoom');
 
         Route::get('update-room', [AdminController::class, 'updateRoom'])->name('home/admin/updateRoom');
@@ -44,6 +49,8 @@ Route::group(['prefix' => $prefixHome], function() {
         Route::get('delete-bill', [AdminController::class, 'deleteBill'])->name('home/admin/deleteBill');
 
         Route::get('delete-user', [AdminController::class, 'deleteUser'])->name('home/admin/deleteUser');
+
+        Route::get('thongke', [AdminController::class, 'thongke'])->name('home/admin/thongke');
 
         // --------------------------------------------------------------------------
 

@@ -106,7 +106,7 @@
         
                             <div>
                                 <label for="countPeople">Số lượng người</label><br>
-                                <input type="number" id="countPeople" name="countPeople" max="{{ $room->countPeople }}" value="{{ $cateBooking->odCountPeople }}" required><br>
+                                <input type="number" id="countPeople" name="countPeople" min="1" max="{{ $room->countPeople }}" value="{{ $cateBooking->odCountPeople }}" required><br>
                             </div>
         
                             <div>

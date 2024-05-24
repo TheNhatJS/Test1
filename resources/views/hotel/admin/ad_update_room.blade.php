@@ -18,6 +18,7 @@
             @foreach ($allInfoRoom as $key => $cateInfoR)
                 <form action="{{ route('home/admin/postUpdateRoom', ['roomID' => $cateInfoR->roomID]) }}" method="post">
                     {{ csrf_field() }}
+
                     <tr>
                         <th>
                             <label for="roomName">Tên phòng</label>

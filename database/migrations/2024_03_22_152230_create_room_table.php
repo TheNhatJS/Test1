@@ -20,6 +20,8 @@ return new class extends Migration
             $table->tinyInteger('status')->default(1);
             $table->text('info');
             $table->string('image');
+            $table->dateTime('create');
+            $table->dateTime('update');
 
             $table->timestamps();
         });
