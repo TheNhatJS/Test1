@@ -32,20 +32,21 @@
                 <tbody>
                     @foreach($allBookingHistory as $key => $cateBookingHistory)
 
-                    {{--  <?php
-                        $booking = DB::table('tbl_booking')->where('bookingID', $cateBookingHistory->bookingID)->first();
-                        $room = DB::table('tbl_room')->where('roomID', $booking->roomID)->first();
-                        $user = DB::table('tbl_user')->where('userID', $booking->userID)->first();
-                        $bill = DB::table('tbl_bill')->where('billID', $cateBookingHistory->billID)->first();
+                    <?php
+                        $checkIn = new DateTime($cateBookingHistory->checkIn);
+                        $checkOut = new DateTime($cateBookingHistory->checkOut);
 
-                    ?>  --}}
+                        // Tính số ngày giữa ngày check-in và check-out
+                        $interval = $checkIn->diff($checkOut);
+                        $stay = $interval->days + 1;
+                    ?>
                     <tr>
                         <td>{{ ++$key }}</td>
                         <td>{{ $cateBookingHistory->nameRoom }}</td>
                         <td>{{ $cateBookingHistory->nameUser }}</td>
                         <td>{{ $cateBookingHistory->checkIn }}</td>
                         <td>{{ $cateBookingHistory->checkOut }}</td>
-                        <td>{{ number_format($cateBookingHistory->payRoom, 0, ',', '.') }} VNĐ</td>
+                        <td>{{ number_format($stay * $cateBookingHistory->payRoom, 0, ',', '.') }} VNĐ</td>
                         <td>{{ $cateBookingHistory->create }}</td>
                         
                         <td>

@@ -44,11 +44,11 @@
                     </tr>
                     
                     <tr>
-                        <th>Tiền đặt cọc(10%):</th>
+                        <th>Tiền đặt cọc(20%):</th>
                         <td>
                             <?php
-                                $datCoc = $room->price*0.1;
-                                echo number_format($datCoc, 0, ',', '.') . " VNĐ";
+                                $datCoc = $room->price*0.2;
+                                echo number_format($datCoc, 0, ',', '.') . " VNĐ/Ngày";
                             ?>
                         </td>
                     </tr>

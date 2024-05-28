@@ -24,6 +24,7 @@
                     <th>Ngày nhận phòng</th>
                     <th>Ngày trả phòng</th>
                     <th>Tổng tiền</th>
+                    <th>Thanh toán</th>
 
                     <th>Action</th>
                 </thead>
@@ -36,6 +37,13 @@
                         $room = DB::table('tbl_room')->where('roomID', $booking->roomID)->first();
                         $user = DB::table('tbl_user')->where('userID', $cateBill->userID)->first();
 
+                        // Chuyển đổi ngày check-in và check-out sang đối tượng DateTime
+                        $checkInDate = new DateTime($booking->checkInDate);
+                        $checkOutDate = new DateTime($booking->checkOutDate);
+
+                        // Tính số ngày giữa ngày check-in và check-out
+                        $interval = $checkInDate->diff($checkOutDate);
+                        $stay = $interval->days + 1; // Thêm 1 để bao gồm cả ngày check-out
                     ?>
                     <tr>
                         <td>{{ ++$key }}</td>
@@ -43,7 +51,8 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $booking->checkInDate }}</td>
                         <td>{{ $booking->checkOutDate }}</td>
-                        <td>{{ number_format($cateBill->pay, 0, ',', '.') }} VNĐ</td>
+                        <td>{{ number_format($stay * $cateBill->pay, 0, ',', '.') }} VNĐ</td>
+                        <td>{{ number_format(($stay * $cateBill->pay) - ($stay * ($cateBill->pay*0.2)), 0, ',', '.') }} VNĐ</td>
                         
                         <td>
                             <a href="{{ route('home/admin/deleteBill', ['bookingID' => $cateBill->bookingID]) }}" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')"><i class="ti-trash">

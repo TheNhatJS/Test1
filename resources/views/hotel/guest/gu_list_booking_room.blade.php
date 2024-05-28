@@ -21,6 +21,8 @@
                     <th>STT</th>
                     <th>Ảnh</th>
                     <th>Tên phòng</th>
+                    <th>Tổng tiền</th>
+                    <th>Đặt cọc(20%)</th>
                     <th>Thông tin đặt phòng</th>
                     <th>Thông tin khách hàng</th>
     
@@ -34,6 +36,14 @@
                             $user = DB::table('tbl_user')->where('userID', $cateBooking->userID)->first();
     
                             $room = DB::table('tbl_room')->where('roomID', $cateBooking->roomID)->first();
+
+                            // Chuyển đổi ngày check-in và check-out sang đối tượng DateTime
+                            $checkInDate = new DateTime($cateBooking->checkInDate);
+                            $checkOutDate = new DateTime($cateBooking->checkOutDate);
+
+                            // Tính số ngày giữa ngày check-in và check-out
+                            $interval = $checkInDate->diff($checkOutDate);
+                            $stay = $interval->days + 1;
                         ?>
     
     
@@ -41,6 +51,10 @@
                             <td>{{ ++$key }}</td>
                             <td><img src="{{ asset('hotel/assets/img/Room/' . $room->image) }}" alt="" style="width: 100%"></td>
                             <td>{{ $room->name }}</td>
+
+                            <td>{{ number_format($stay * $room->price, 0, ',', '.') }} VNĐ</td>
+
+                            <td>{{ number_format($stay * ($room->price*0.2), 0, ',', '.') }} VNĐ</td>
                             <td>
                                 Số người: {{ $cateBooking->odCountPeople }} <br>
                                 Ngày nhận phòng: {{ $cateBooking->checkInDate }} <br>
